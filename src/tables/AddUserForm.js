@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useForm } from "react-hook-form";
+
 
 const AddStudentForm = (props) => {
   const initialFormState = { id: null, name: '', age: '' }
@@ -11,6 +13,15 @@ const AddStudentForm = (props) => {
 
     setStudents({ ...student, [name]: value })
   }
+
+  // validate for form
+  const { register, handleSubmit, formState: { errors } } = useForm({
+      criteriaMode: "all"
+  });
+
+  console.log(register)
+
+
 
   return (
     <form onSubmit={(event) => {
@@ -25,8 +36,9 @@ const AddStudentForm = (props) => {
       <label>Name</label>
 
       <input type="text" name="name" value={student.name}
-       onChange={handleInputChange}/>
+       onChange={handleInputChange} {...register("exampleRequired", { required: true })}/>
 
+       {errors.exampleRequired && <span>This field is required</span>}
       <label>Age</label>
 
       <input type="text" name="age" value={student.age}  onChange={handleInputChange}/>
